@@ -1,6 +1,6 @@
 from django.db import models
 
-from .constants import RATING_CHOICES
+from .constants import RATING_CHOICES, CATEGORY_CHOICES
 
 
 # Create your models here.
@@ -9,12 +9,7 @@ class Driver(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     rating = models.IntegerField(choices=RATING_CHOICES)
-    category = models.CharField(max_length=50, choices=[
-        ('PRODUCT', 'Product'),
-        ('COMPUTER', 'Computer'),
-        ('PERSONNEL', 'Personnel'),
-        ('PROJECT', 'Project')
-    ])
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

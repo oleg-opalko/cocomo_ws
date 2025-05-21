@@ -5,4 +5,11 @@ RATING_CHOICES = [
     (4, 'High'),
     (5, 'Very High'),
     (6, 'Extra High')
+]
+
+CATEGORY_CHOICES = [
+    ('PRODUCT', 'Product'),
+    ('COMPUTER', 'Computer'),
+    ('PERSONNEL', 'Personnel'),
+    ('PROJECT', 'Project')
 ] 
