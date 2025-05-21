@@ -14,7 +14,7 @@ class Driver(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} ({self.get_category_display()})"
+        return f"{self.name})"
 
     class Meta:
         ordering = ['category', 'name']
