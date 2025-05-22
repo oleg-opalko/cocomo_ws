@@ -1,0 +1,203 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}Edit{% else %}New{% endif %} Project - COCOMO II Calculator
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{% if form.instance.pk %}Edit{% else %}New{% endif %} Project</h1>
+    <a href="{% url 'project-list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+
+<form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Project Information</h5>
+        </div>
+        <div class="card-body">
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field.errors }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Scale Drivers</h5>
+                    <a href="{% url 'scale-driver-create' %}" class="btn btn-sm btn-success float-end">Додати Scale Driver</a>
+                </div>
+                <div class="card-body">
+                    {{ scale_driver_formset.management_form }}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Driver</th>
+                                    <th>Rating</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for form in scale_driver_formset %}
+                                    <tr>
+                                        <td>
+                                            {{ form.scale_driver }}
+                                            {{ form.scale_driver.errors }}
+                                        </td>
+                                        <td>
+                                            {{ form.rating }}
+                                            {{ form.rating.errors }}
+                                        </td>
+                                        <td>
+                                            {% if form.DELETE %}
+                                                {{ form.DELETE }} Видалити
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <!-- Empty form template for JS -->
+                                <tr data-empty-form-scale_driver_formset style="display:none;">
+                                    <td>__SCALE_DRIVER__</td>
+                                    <td>__RATING__</td>
+                                    <td>__DELETE__</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% comment %} <button type="button" class="btn btn-outline-primary btn-sm" id="add-scale-driver">Додати драйвер</button> {% endcomment %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Cost Drivers</h5>
+                    <a href="{% url 'cost-driver-create' %}" class="btn btn-sm btn-success float-end">Додати Cost Driver</a>
+                </div>
+                <div class="card-body">
+                    {{ cost_driver_formset.management_form }}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Driver</th>
+                                    <th>Rating</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for form in cost_driver_formset %}
+                                    <tr>
+                                        <td>
+                                            {{ form.cost_driver }}
+                                            {{ form.cost_driver.errors }}
+                                        </td>
+                                        <td>
+                                            {{ form.rating }}
+                                            {{ form.rating.errors }}
+                                        </td>
+                                        <td>
+                                            {% if form.DELETE %}
+                                                {{ form.DELETE }} Видалити
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <!-- Empty form template for JS -->
+                                <tr data-empty-form-cost_driver_formset style="display:none;">
+                                    <td>__COST_DRIVER__</td>
+                                    <td>__RATING__</td>
+                                    <td>__DELETE__</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% comment %} <button type="button" class="btn btn-outline-primary btn-sm" id="add-cost-driver">Додати драйвер</button> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit" class="btn btn-primary">Save Project</button>
+    </div>
+</form>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add Bootstrap classes to form fields
+    document.querySelectorAll('input, select, textarea').forEach(function(element) {
+        element.classList.add('form-control');
+    });
+
+    // Enable hidden fields for disabled selects
+    document.querySelectorAll('select[disabled]').forEach(function(select) {
+        var hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = select.name;
+        hidden.value = select.value;
+        select.parentNode.appendChild(hidden);
+    });
+
+    // Додавання нових форм у formset
+    function cloneEmptyForm(prefix) {
+        var totalForms = document.getElementById('id_' + prefix + '-TOTAL_FORMS');
+        var formCount = parseInt(totalForms.value);
+        var emptyRow = document.querySelector('tr[data-empty-form-' + prefix + ']');
+        var newRow = emptyRow.cloneNode(true);
+        newRow.removeAttribute('data-empty-form-' + prefix);
+        newRow.style.display = '';
+        // Замінити плейсхолдери на реальні поля
+        if (prefix === 'scale_driver_formset') {
+            newRow.innerHTML = newRow.innerHTML.replace('__SCALE_DRIVER__', scale_driver_formset_empty_form_html('scale_driver', formCount));
+            newRow.innerHTML = newRow.innerHTML.replace('__RATING__', scale_driver_formset_empty_form_html('rating', formCount));
+            newRow.innerHTML = newRow.innerHTML.replace('__DELETE__', scale_driver_formset_empty_form_html('DELETE', formCount));
+        } else if (prefix === 'cost_driver_formset') {
+            newRow.innerHTML = newRow.innerHTML.replace('__COST_DRIVER__', cost_driver_formset_empty_form_html('cost_driver', formCount));
+            newRow.innerHTML = newRow.innerHTML.replace('__RATING__', cost_driver_formset_empty_form_html('rating', formCount));
+            newRow.innerHTML = newRow.innerHTML.replace('__DELETE__', cost_driver_formset_empty_form_html('DELETE', formCount));
+        }
+        emptyRow.parentNode.insertBefore(newRow, emptyRow);
+        totalForms.value = formCount + 1;
+    }
+    // Функції для отримання html порожньої форми
+    function scale_driver_formset_empty_form_html(field, idx) {
+        return document.getElementById('empty_scale_driver_formset_' + field).innerHTML.replace(/__prefix__/g, idx);
+    }
+    function cost_driver_formset_empty_form_html(field, idx) {
+        return document.getElementById('empty_cost_driver_formset_' + field).innerHTML.replace(/__prefix__/g, idx);
+    }
+
+    document.getElementById('add-scale-driver').addEventListener('click', function() {
+        cloneEmptyForm('scale_driver_formset');
+    });
+    document.getElementById('add-cost-driver').addEventListener('click', function() {
+        cloneEmptyForm('cost_driver_formset');
+    });
+});
+</script>
+<!-- Hidden empty form fields for JS -->
+<div style="display:none;">
+    <span id="empty_scale_driver_formset_scale_driver">{{ scale_driver_formset.empty_form.scale_driver }}</span>
+    <span id="empty_scale_driver_formset_rating">{{ scale_driver_formset.empty_form.rating }}</span>
+    <span id="empty_scale_driver_formset_DELETE">{{ scale_driver_formset.empty_form.DELETE }}</span>
+    <span id="empty_cost_driver_formset_cost_driver">{{ cost_driver_formset.empty_form.cost_driver }}</span>
+    <span id="empty_cost_driver_formset_rating">{{ cost_driver_formset.empty_form.rating }}</span>
+    <span id="empty_cost_driver_formset_DELETE">{{ cost_driver_formset.empty_form.DELETE }}</span>
+</div>
+{% endblock %}
+{% endblock %} 

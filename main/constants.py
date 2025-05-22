@@ -13,3 +13,8 @@ CATEGORY_CHOICES = [
     ('PERSONNEL', 'Personnel'),
     ('PROJECT', 'Project')
 ] 
+
+MODEL_FAMILIES = [
+    ('COCOMO_81', 'COCOMO 81'),
+    ('COCOMO_II', 'COCOMO II'),
+]

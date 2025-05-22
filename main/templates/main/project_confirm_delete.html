@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Видалити проект{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Видалити проект</h1>
+    <p>Ви впевнені, що хочете видалити проект "{{ object.name }}"?</p>
+    <form method="post">{% csrf_token %}
+        <button type="submit" class="btn btn-danger">Так, видалити</button>
+        <a href="{% url 'project-detail' object.pk %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
+{% endblock %} 

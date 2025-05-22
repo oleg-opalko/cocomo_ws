@@ -1,0 +1,126 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ project.name }} - COCOMO II Calculator{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ project.name }}</h1>
+    <div>
+        <a href="{% url 'project-update' project.pk %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'project-delete' project.pk %}" class="btn btn-danger">Видалити проект</a>
+        <a href="{% url 'project-list' %}" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Project Information</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Description</dt>
+                    <dd class="col-sm-8">{{ project.description|default:"No description" }}</dd>
+
+                    <dt class="col-sm-4">Model Family</dt>
+                    <dd class="col-sm-8">{{ project.get_model_family_display }}</dd>
+
+                    <dt class="col-sm-4">Size (KLOC)</dt>
+                    <dd class="col-sm-8">{{ project.size_kloc }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Calculation Results</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Effort (PM)</dt>
+                    <dd class="col-sm-8">{{ results.effort }}</dd>
+
+                    <dt class="col-sm-4">Schedule (Months)</dt>
+                    <dd class="col-sm-8">{{ results.schedule }}</dd>
+
+                    <dt class="col-sm-4">Staffing</dt>
+                    <dd class="col-sm-8">{{ results.staffing }}</dd>
+
+                    <dt class="col-sm-4">Scale Factor</dt>
+                    <dd class="col-sm-8">{{ results.scale_factor }}</dd>
+
+                    <dt class="col-sm-4">EAF</dt>
+                    <dd class="col-sm-8">{{ results.eaf }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Scale Drivers</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Driver</th>
+                                <th>Rating</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for scale in scale_drivers %}
+                                <tr>
+                                    <td>{{ scale.scale_driver.name }}</td>
+                                    <td>{{ scale.get_rating_display }}</td>
+                                    <td>{{ scale.scale_driver.weight }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Cost Drivers</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Driver</th>
+                                <th>Category</th>
+                                <th>Rating</th>
+                                <th>Multiplier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cost in cost_drivers %}
+                                <tr>
+                                    <td>{{ cost.cost_driver.name }}</td>
+                                    <td>{{ cost.cost_driver.get_category_display }}</td>
+                                    <td>{{ cost.get_rating_display }}</td>
+                                    <td>{{ cost.cost_driver.effort_multiplier }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

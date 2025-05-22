@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Додати Scale Driver{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Додати Scale Driver</h1>
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Додати</button>
+        <a href="{% url 'project-create' %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
+{% endblock %} 

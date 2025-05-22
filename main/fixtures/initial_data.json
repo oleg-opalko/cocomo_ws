@@ -1,0 +1,107 @@
+[
+    {
+        "model": "main.scaledriver",
+        "pk": 1,
+        "fields": {
+            "name": "Precedentedness",
+            "description": "The extent to which the project is similar to previously developed projects",
+            "rating": 3,
+            "weight": 0.91
+        }
+    },
+    {
+        "model": "main.scaledriver",
+        "pk": 2,
+        "fields": {
+            "name": "Development Flexibility",
+            "description": "The extent to which the project can be developed with flexibility",
+            "rating": 3,
+            "weight": 0.91
+        }
+    },
+    {
+        "model": "main.scaledriver",
+        "pk": 3,
+        "fields": {
+            "name": "Architecture/Risk Resolution",
+            "description": "The extent to which the architecture and risk resolution is handled",
+            "rating": 3,
+            "weight": 0.91
+        }
+    },
+    {
+        "model": "main.scaledriver",
+        "pk": 4,
+        "fields": {
+            "name": "Team Cohesion",
+            "description": "The extent to which the team works together",
+            "rating": 3,
+            "weight": 0.91
+        }
+    },
+    {
+        "model": "main.scaledriver",
+        "pk": 5,
+        "fields": {
+            "name": "Process Maturity",
+            "description": "The extent to which the development process is mature",
+            "rating": 3,
+            "weight": 0.91
+        }
+    },
+    {
+        "model": "main.costdriver",
+        "pk": 1,
+        "fields": {
+            "name": "Required Software Reliability",
+            "description": "The extent to which the software must perform its intended function over a period of time",
+            "rating": 3,
+            "category": "PRODUCT",
+            "effort_multiplier": 1.0
+        }
+    },
+    {
+        "model": "main.costdriver",
+        "pk": 2,
+        "fields": {
+            "name": "Database Size",
+            "description": "The size of the database that the software will use",
+            "rating": 3,
+            "category": "PRODUCT",
+            "effort_multiplier": 1.0
+        }
+    },
+    {
+        "model": "main.costdriver",
+        "pk": 3,
+        "fields": {
+            "name": "Product Complexity",
+            "description": "The complexity of the product being developed",
+            "rating": 3,
+            "category": "PRODUCT",
+            "effort_multiplier": 1.0
+        }
+    },
+    {
+        "model": "main.costdriver",
+        "pk": 4,
+        "fields": {
+            "name": "Required Reusability",
+            "description": "The extent to which the software must be reusable",
+            "rating": 3,
+            "category": "PRODUCT",
+            "effort_multiplier": 1.0
+        }
+    },
+    {
+        "model": "main.costdriver",
+        "pk": 5,
+        "fields": {
+            "name": "Documentation Match to Life-Cycle Needs",
+            "description": "The extent to which the documentation matches the life-cycle needs",
+            "rating": 3,
+            "category": "PRODUCT",
+            "effort_multiplier": 1.0
+        }
+    }
+]
